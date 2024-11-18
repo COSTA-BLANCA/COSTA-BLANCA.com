@@ -37,7 +37,7 @@ body {
   background-color: #fbf4de;
 }
 .head-color{
-  background: linear-gradient(45deg,red ,blue); /* التدرج بين الألوان */
+  background: linear-gradient(45deg,red ,#6a040f); /* التدرج بين الألوان */
             background-clip: text; /* استخدام التدرج في النص */
             color: transparent; /* جعل النص شفافًا بحيث يظهر التدرج خلفه */
             display: inline; 
