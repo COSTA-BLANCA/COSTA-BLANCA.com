@@ -29979,11 +29979,7 @@ module.exports = function(Chart) {
 
 
 
-jQuery(document).ready(function($) {
-    $(".order-row").click(function() {
-        window.location = $(this).data("href");
-    });
-});
+
 
 function openNav() {
   document.getElementById("nav-close").style.bottom = "51vh";
