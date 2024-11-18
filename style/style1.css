@@ -37,13 +37,13 @@ body {
   background-color: #fbf4de;
 }
 .head-color{
-  background: linear-gradient(45deg,red ,blue); /* التدرج بين الألوان */
+  background: linear-gradient(45deg,red, #d00000,#6a040f); /* التدرج بين الألوان */
             background-clip: text; /* استخدام التدرج في النص */
             color: transparent; /* جعل النص شفافًا بحيث يظهر التدرج خلفه */
             display: inline; 
 }
 .icon-color{
-  background: linear-gradient(45deg,red, blue);
+  background: linear-gradient(45deg,red, #d00000,#6a040f);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
