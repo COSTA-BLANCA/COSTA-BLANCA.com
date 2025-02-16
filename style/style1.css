@@ -37,13 +37,13 @@ body {
   background-color: #fbf4de;
 }
 .head-color{
-  background: -webkit-linear-gradient(45deg,red, #d00000,#6a040f); /* التدرج بين الألوان */
-           -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; /* جعل النص شفافًا بحيث يظهر التدرج خلفه */
+  background: linear-gradient(45deg,red, #d00000,#6a040f); /* التدرج بين الألوان */
+            background-clip: text; /* استخدام التدرج في النص */
+            color: transparent; /* جعل النص شفافًا بحيث يظهر التدرج خلفه */
             display: inline; 
 }
 .icon-color{
-  background: -webkit-linear-gradient(45deg,red, #d00000,#6a040f);
+  background: linear-gradient(45deg,red, #d00000,#6a040f);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
@@ -51,9 +51,10 @@ body {
 
 }
 .f-color{
-  background: -webkit-linear-gradient(45deg,red, blue); /* التدرج بين الألوان */
-           -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; /* جعل النص شفافًا بحيث يظهر التدرج خلفه */
+  background: linear-gradient(45deg,red, blue); /* التدرج بين الألوان */
+            background-clip: text; /* استخدام التدرج في النص */
+            -webkit-background-clip: text;
+            color: transparent; /* جعل النص شفافًا بحيث يظهر التدرج خلفه */
             display: inline; 
             font-size: 1em;
 }
@@ -77,9 +78,9 @@ p {
   margin-top: 0;
 }
 .h-head {
-  background: -webkit-linear-gradient(45deg,#f1f1f1,#ffffff); /* التدرج بين الألوان */
-           -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;/* جعل النص شفافًا بحيث يظهر التدرج خلفه */
+  background: linear-gradient(45deg,#f1f1f1,#ffffff); /* التدرج بين الألوان */
+            background-clip: text; /* استخدام التدرج في النص */
+            color: transparent; /* جعل النص شفافًا بحيث يظهر التدرج خلفه */
             display: inline; 
    margin: 0 5px;
   font-size: 1.5em;
@@ -7425,6 +7426,8 @@ textarea.ltr {
   height: 20vh;
 }
 .logo {
+  height: 20vh;
+
 }
 .LOGO1 {
   margin-top: 60px;
