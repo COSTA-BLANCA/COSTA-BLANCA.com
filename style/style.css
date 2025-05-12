@@ -108,22 +108,24 @@
 /* الوضع الابتدائي */
 .slide-in-right {
   opacity: 0;
-  transform: translateX(-800px) rotate(540deg);
+  transform: translateY(-800px) rotate(-540deg);
 }
 
 /* لما AOS يضيف aos-animate */
 [data-aos].aos-animate .slide-in-right {
-  animation: slideRight 1.1s forwards;
+  animation: slideRight 1.0s ease-out both;
 }
 
 /* Keyframes */
 @keyframes slideRight {
   0% {
-    transform: translateX(800px) rotate(540deg);
+    -webkit-transform: translateY(-800px) rotate(-540deg);
+            transform: translateY(-800px) rotate(-540deg);
     opacity: 0;
   }
   100% {
-    transform: translateX(0) rotate(0deg);
+    -webkit-transform: translateY(0) rotate(0deg);
+            transform: translateY(0) rotate(0deg);
     opacity: 1;
   }
 }
@@ -132,54 +134,49 @@
 /* الوضع الابتدائي */
 .slide-in-left {
   opacity: 0;
-  transform: translateX(-800px) rotate(-540deg);
+  transform: translateY(800px) rotate(540deg);
 }
 
 /* لما AOS يضيف aos-animate */
 [data-aos].aos-animate .slide-in-left {
-  animation: slideLeft 1.1s forwards;
+  animation: slideLeft  1s ease-out both;
 }
 
 /* Keyframes لحركة الانزلاق من اليسار */
 @keyframes slideLeft {
   0% {
-    transform: translateX(-800px) rotate(-540deg);
+    -webkit-transform: translateY(800px) rotate(540deg);
+            transform: translateY(800px) rotate(540deg);
     opacity: 0;
   }
   100% {
-    transform: translateX(0) rotate(0deg);
+    -webkit-transform: translateY(0) rotate(0deg);
+            transform: translateY(0) rotate(0deg);
     opacity: 1;
   }
 }
-
 .flip-scale-up-ver.clicked {
-  -webkit-animation: flip- 0.4s linear both;
-  animation: flip- 0.4s linear both;
+  -webkit-animation: flip- 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+  animation: flip- 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 }
 
  @-webkit-keyframes flip- {
   0% {
-    -webkit-transform: rotate(0);
-            transform: rotate(0);
-  }
-  50% {
-    -webkit-transform: rotate(180deg) scale(1.1);
-            transform: rotate(180deg) scale(1.1);
+    -webkit-transform: rotateY(0);
+            transform: rotateY(0);
   }
   100% {
-    -webkit-transform: rotate(360deg) scale(1);
-            transform: rotate(360deg) scale(1);
+    -webkit-transform: rotateY(360deg);
+            transform: rotateY(360deg);
   }
 }
 @keyframes flip- {
   0% {
-    -webkit-transform: rotateX(360deg);
-            transform: rotateX(360deg);
-    opacity: 0;
+    -webkit-transform: rotateY(0);
+            transform: rotateY(0);
   }
   100% {
-    -webkit-transform: rotateX(0deg);
-            transform: rotateX(0deg);
-    opacity: 1;
+    -webkit-transform: rotateY(360deg);
+            transform: rotateY(360deg);
   }
 }
