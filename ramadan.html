@@ -272,12 +272,21 @@
       }
     }
 
-        @media (max-width: 768px) {
+    @media (max-width: 768px) {
       .hang-string { height: 58px; }
       .hang-lantern { width: 62px; height: 94px; }
       .hang-lantern::before { content: none; }
       .hang-moon { width: 34px; height: 34px; }
       .hanging-ramadan-decor .hide-mobile { display: none; }
+
+      /* Mobile spacing + lengths: long, shorter, shorter */
+      .hanging-ramadan-decor .hang-item:nth-child(1) { --x: 3%;  --len: 140px; }
+      .hanging-ramadan-decor .hang-item:nth-child(2) { --x: 13%; --len: 100px; }
+      .hanging-ramadan-decor .hang-item:nth-child(3) { --x: 24%; --len: 72px; }
+
+      .hanging-ramadan-decor .hang-item:nth-child(4) { --x: 76%; --len: 140px; }
+      .hanging-ramadan-decor .hang-item:nth-child(5) { --x: 87%; --len: 100px; }
+      .hanging-ramadan-decor .hang-item:nth-child(6) { --x: 96%; --len: 72px; }
     }
 
   </style>
@@ -296,7 +305,7 @@
   </div>
   <!-- //////////////////////////////////////////////// header //////////////////////////////////////////////////////////////////// -->
   <div class="menu-header"
-    style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/our-place/bg.png);">
+    style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(images/our-place/bg.png);">
     <div id="company-header" class="scale-in-center" style="width:min(96vw, 1200px); margin:0 auto 2em;">
     <div class="hanging-ramadan-decor" aria-hidden="true">
     <div class="hang-item" style="--x:8%;--len:118px;--drop-delay:.1s;--delay:.2s;--swing:4.8s;--rot:5deg;--scale:.96;">
@@ -337,7 +346,7 @@
       </div>
     </div>
   </div>
-      <div id="company-logo" class="flex justify-center items-center LOGO1"><img alt="COSTA BIANCA" src="../images/home/logo.png" width="250" height="100" /></div>
+      <div id="company-logo" class="flex justify-center items-center LOGO1"><img alt="COSTA BIANCA" src="images/home/logo.png" width="250" height="100" /></div>
       <h1 class="menu-title "> ramadan menu  </h1>
     </div>
   </div>
