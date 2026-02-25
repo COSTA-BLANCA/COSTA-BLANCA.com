@@ -105,33 +105,17 @@
     .hang-moon {
       width: 46px;
       height: 46px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 24% 24%, #fff3bf 0%, #f7d782 52%, #daae48 100%);
-      box-shadow: 0 0 16px rgba(244, 208, 111, 0.52), 0 0 30px rgba(244, 208, 111, 0.25);
+      background-image: url('images/home/هلال.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      filter: drop-shadow(0 0 10px rgba(244, 208, 111, 0.45));
       transform: rotate(10deg) scale(var(--scale, 1));
     }
 
-    .hang-moon::before {
-      content: "";
-      position: absolute;
-      width: 34px;
-      height: 34px;
-      top: 6px;
-      left: 13px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.5);
-    }
-
+    .hang-moon::before,
     .hang-moon::after {
-      content: "";
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      top: 8px;
-      left: 6px;
-      border-radius: 50%;
-      background: rgba(255, 245, 198, 0.95);
-      box-shadow: 7px 3px 0 rgba(255, 236, 171, 0.88), 2px 10px 0 rgba(255, 236, 171, 0.7);
+      content: none;
     }
     .ramadan-bg-float {
       position: fixed;
@@ -237,11 +221,19 @@
     }
 
         @media (max-width: 768px) {
-      .hang-string { height: 58px; }
+      .hanging-ramadan-decor .hang-item .hang-string { height: var(--len, 95px) !important; }
       .hang-lantern { width: 62px; height: 94px; }
       .hang-lantern::before { content: none; }
       .hang-moon { width: 34px; height: 34px; }
       .hanging-ramadan-decor .hide-mobile { display: none; }
+
+      .hanging-ramadan-decor .hang-item:nth-child(1) { --x: 8%;  --len: 190px; }
+      .hanging-ramadan-decor .hang-item:nth-child(2) { --x: 18%;  --len: 130px; }
+      .hanging-ramadan-decor .hang-item:nth-child(3) { --x: 28%;  --len: 70px; }
+
+      .hanging-ramadan-decor .hang-item:nth-child(4) { --x: 88%; --len: 190px; }
+      .hanging-ramadan-decor .hang-item:nth-child(5) { --x: 88%; --len: 130px; }
+      .hanging-ramadan-decor .hang-item:nth-child(6) { --x: 88%; --len: 70px; }
     }
 
   </style>

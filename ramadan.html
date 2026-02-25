@@ -126,7 +126,7 @@
         .hang-lantern {
       width: 84px;
       height: 126px;
-      background-image: url('../images/home/فانوس.png');
+      background-image: url('/images/home/فانوس.png');
       background-repeat: no-repeat;
       background-position: center;
       background-size: contain;
@@ -141,33 +141,17 @@
     .hang-moon {
       width: 46px;
       height: 46px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 24% 24%, #fff3bf 0%, #f7d782 52%, #daae48 100%);
-      box-shadow: 0 0 16px rgba(244, 208, 111, 0.52), 0 0 30px rgba(244, 208, 111, 0.25);
+      background-image: url('images/home/هلال.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      filter: drop-shadow(0 0 10px rgba(244, 208, 111, 0.45));
       transform: rotate(10deg) scale(var(--scale, 1));
     }
 
-    .hang-moon::before {
-      content: "";
-      position: absolute;
-      width: 34px;
-      height: 34px;
-      top: 6px;
-      left: 13px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.5);
-    }
-
+    .hang-moon::before,
     .hang-moon::after {
-      content: "";
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      top: 8px;
-      left: 6px;
-      border-radius: 50%;
-      background: rgba(255, 245, 198, 0.95);
-      box-shadow: 7px 3px 0 rgba(255, 236, 171, 0.88), 2px 10px 0 rgba(255, 236, 171, 0.7);
+      content: none;
     }
     .ramadan-bg-float {
       position: fixed;
@@ -273,20 +257,20 @@
     }
 
     @media (max-width: 768px) {
-      .hang-string { height: 58px; }
+      .hanging-ramadan-decor .hang-item .hang-string { height: var(--len, 95px) !important; }
       .hang-lantern { width: 62px; height: 94px; }
       .hang-lantern::before { content: none; }
       .hang-moon { width: 34px; height: 34px; }
       .hanging-ramadan-decor .hide-mobile { display: none; }
 
-      /* Mobile spacing + lengths: long, shorter, shorter */
-      .hanging-ramadan-decor .hang-item:nth-child(1) { --x: 3%;  --len: 140px; }
-      .hanging-ramadan-decor .hang-item:nth-child(2) { --x: 13%; --len: 100px; }
-      .hanging-ramadan-decor .hang-item:nth-child(3) { --x: 24%; --len: 72px; }
+      /* Mobile: stack each side vertically (clear one under another) */
+      .hanging-ramadan-decor .hang-item:nth-child(1) { --x: 18%;  --len: 190px; }
+      .hanging-ramadan-decor .hang-item:nth-child(2) { --x: 28%;  --len: 130px; }
+      .hanging-ramadan-decor .hang-item:nth-child(3) { --x: 38%;  --len: 70px; }
 
-      .hanging-ramadan-decor .hang-item:nth-child(4) { --x: 76%; --len: 140px; }
-      .hanging-ramadan-decor .hang-item:nth-child(5) { --x: 87%; --len: 100px; }
-      .hanging-ramadan-decor .hang-item:nth-child(6) { --x: 96%; --len: 72px; }
+      .hanging-ramadan-decor .hang-item:nth-child(4) { --x: 88%; --len: 190px; }
+      .hanging-ramadan-decor .hang-item:nth-child(5) { --x: 98%; --len: 130px; }
+      .hanging-ramadan-decor .hang-item:nth-child(6) { --x: 108%; --len: 70px; }
     }
 
   </style>
@@ -550,9 +534,7 @@
           <h2 class="h4 mb-0">Ramadan Menu PDF</h2>
           <a id="pdf-download" class="btn btn-outline-light btn-sm" href="pdf/ramadan-menu.pdf" target="_blank" rel="noopener noreferrer">Download PDF</a>
         </div>
-        <object data="pdf/ramadan-menu.pdf#view=FitH" type="application/pdf" class="pdf-embed">
-          <iframe src="pdf/ramadan-menu.pdf#view=FitH" class="pdf-embed" title="Ramadan Menu PDF"></iframe>
-        </object>
+        <div id="pdf-pages" class="pdf-embed" style="overflow:auto; background:#0f172a;"></div>
         <div class="pdf-message mt-3">
           لو الملف لم يظهر على جهازك، افتحه من هنا:
           <a href="pdf/ramadan-menu.pdf" target="_blank" rel="noopener noreferrer" class="text-white fw-bold">Open PDF</a>
@@ -662,8 +644,60 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
     integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  <script>
+    (function () {
+      const container = document.getElementById("pdf-pages");
+      if (!container || !window.pdfjsLib) return;
+
+      const pdfUrl = "pdf/ramadan-menu.pdf";
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+      async function renderPdfPages() {
+        try {
+          container.innerHTML = "";
+          const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+          const targetWidth = Math.max(
+            320,
+            Math.min(container.clientWidth || window.innerWidth - 32, 1000)
+          );
+
+          for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+            const page = await pdf.getPage(pageNumber);
+            const baseViewport = page.getViewport({ scale: 1 });
+            const scale = targetWidth / baseViewport.width;
+            const viewport = page.getViewport({ scale });
+
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            canvas.width = Math.floor(viewport.width);
+            canvas.height = Math.floor(viewport.height);
+            canvas.style.width = "100%";
+            canvas.style.height = "auto";
+            canvas.style.display = "block";
+            canvas.style.marginBottom = "12px";
+            canvas.style.borderRadius = "10px";
+            canvas.style.background = "#fff";
+
+            await page.render({ canvasContext: context, viewport }).promise;
+            container.appendChild(canvas);
+          }
+        } catch (error) {
+          container.innerHTML =
+            '<div style="color:#fff;padding:12px;">تعذر عرض الملف داخل الصفحة. استخدم زر Download PDF.</div>';
+        }
+      }
+
+      renderPdfPages();
+      let resizeTimer;
+      window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(renderPdfPages, 250);
+      });
+    })();
+  </script>
 </body>
 
 </html>
