@@ -534,7 +534,8 @@
           <h2 class="h4 mb-0">Ramadan Menu PDF</h2>
           <a id="pdf-download" class="btn btn-outline-light btn-sm" href="pdf/ramadan-menu.pdf" target="_blank" rel="noopener noreferrer">Download PDF</a>
         </div>
-        <div id="pdf-pages" class="pdf-embed" style="overflow:auto; background:#0f172a;"></div>
+        <iframe id="pdf-fallback" src="pdf/ramadan-menu.pdf#view=FitH" class="pdf-embed" title="Ramadan Menu PDF"></iframe>
+        <div id="pdf-pages" class="pdf-embed" style="overflow:auto; background:#0f172a; display:none;"></div>
         <div class="pdf-message mt-3">
           لو الملف لم يظهر على جهازك، افتحه من هنا:
           <a href="pdf/ramadan-menu.pdf" target="_blank" rel="noopener noreferrer" class="text-white fw-bold">Open PDF</a>
@@ -649,7 +650,8 @@
   <script>
     (function () {
       const container = document.getElementById("pdf-pages");
-      if (!container) return;
+      const fallback = document.getElementById("pdf-fallback");
+      if (!container || !fallback) return;
 
       const pdfUrl = "pdf/ramadan-menu.pdf";
       let renderToken = 0;
@@ -660,7 +662,7 @@
 
       async function renderPdf() {
         if (!window.pdfjsLib) {
-          errorMessage("تعذر تحميل عارض PDF. استخدم زر Download PDF.");
+          // Keep iframe fallback visible.
           return;
         }
 
@@ -680,7 +682,7 @@
             Math.min(container.clientWidth || window.innerWidth - 32, 1000)
           );
 
-          async function renderOnePage(pageNumber) {
+      async function renderOnePage(pageNumber) {
             if (currentToken !== renderToken) return;
             const page = await pdf.getPage(pageNumber);
             const baseViewport = page.getViewport({ scale: 1 });
@@ -701,15 +703,26 @@
             await page.render({ canvasContext: context, viewport }).promise;
             if (currentToken !== renderToken) return;
             container.appendChild(canvas);
+
+            // Switch from fallback iframe to canvas renderer after first successful page.
+            if (pageNumber === 1) {
+              fallback.style.display = "none";
+              container.style.display = "block";
+            }
           }
 
-          // Show first 5 pages immediately on appearance.
+          // Render page 1 first for immediate visible result.
+          await renderOnePage(1);
+
+          // Then render pages 2..5 right away in background.
           const firstBatch = Math.min(5, pdf.numPages);
-          for (let pageNumber = 1; pageNumber <= firstBatch; pageNumber++) {
-            await renderOnePage(pageNumber);
-          }
+          setTimeout(async function () {
+            for (let pageNumber = 2; pageNumber <= firstBatch; pageNumber++) {
+              await renderOnePage(pageNumber);
+            }
+          }, 0);
 
-          // Render remaining pages progressively in background.
+          // Render remaining pages progressively when browser is idle.
           const renderRemaining = async function () {
             for (let pageNumber = firstBatch + 1; pageNumber <= pdf.numPages; pageNumber++) {
               await renderOnePage(pageNumber);
@@ -717,15 +730,15 @@
           };
 
           if ("requestIdleCallback" in window) {
-            window.requestIdleCallback(function () {
-              renderRemaining();
-            });
+            window.requestIdleCallback(function () { renderRemaining(); });
           } else {
-            setTimeout(renderRemaining, 0);
+            setTimeout(renderRemaining, 200);
           }
         } catch (err) {
           if (currentToken !== renderToken) return;
-          errorMessage("تعذر عرض الملف داخل الصفحة. استخدم زر Download PDF.");
+          // Keep iframe fallback visible if canvas rendering fails.
+          container.style.display = "none";
+          fallback.style.display = "block";
         }
       }
 
