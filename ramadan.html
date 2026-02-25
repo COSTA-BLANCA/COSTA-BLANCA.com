@@ -9,7 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" media="all" href="style/style1.css" data-turbolinks-track="reload" />
   <link rel="stylesheet" media="all" href="style/style.css" data-turbolinks-track="reload" />
-  <script src="js/app.js"></script>
+  <script src="js/app.js" defer></script>
   <link rel="icon" type="image/png" href="images/home/logo.png">
 
   <meta name="csrf-param" content="authenticity_token" />
@@ -637,23 +637,49 @@
     </div>
   </footer>
   <!-- <script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script> -->
-  <script src="js/js2.js"></script>
+  <script src="js/js2.js" defer></script>
 
-  <script src="js/js1.js"></script>
+  <script src="js/js1.js" defer></script>
 
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
     integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js" defer></script>
   <script>
-    (function () {
+    window.addEventListener("load", function () {
       const container = document.getElementById("pdf-pages");
-      if (!container || !window.pdfjsLib) return;
+      if (!container) return;
+      if (!window.pdfjsLib) {
+        container.innerHTML =
+          '<div style="color:#fff;padding:12px;">تعذر تحميل عارض PDF. استخدم زر Download PDF.</div>';
+        return;
+      }
 
       const pdfUrl = "pdf/ramadan-menu.pdf";
       pdfjsLib.GlobalWorkerOptions.workerSrc =
         "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+      async function renderPage(pdf, pageNumber, targetWidth) {
+        const page = await pdf.getPage(pageNumber);
+        const baseViewport = page.getViewport({ scale: 1 });
+        const scale = targetWidth / baseViewport.width;
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.width = Math.floor(viewport.width);
+        canvas.height = Math.floor(viewport.height);
+        canvas.style.width = "100%";
+        canvas.style.height = "auto";
+        canvas.style.display = "block";
+        canvas.style.marginBottom = "12px";
+        canvas.style.borderRadius = "10px";
+        canvas.style.background = "#fff";
+
+        await page.render({ canvasContext: context, viewport }).promise;
+        container.appendChild(canvas);
+      }
 
       async function renderPdfPages() {
         try {
@@ -664,25 +690,22 @@
             Math.min(container.clientWidth || window.innerWidth - 32, 1000)
           );
 
-          for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
-            const page = await pdf.getPage(pageNumber);
-            const baseViewport = page.getViewport({ scale: 1 });
-            const scale = targetWidth / baseViewport.width;
-            const viewport = page.getViewport({ scale });
+          // Fast first paint: render first page immediately.
+          await renderPage(pdf, 1, targetWidth);
 
-            const canvas = document.createElement("canvas");
-            const context = canvas.getContext("2d");
-            canvas.width = Math.floor(viewport.width);
-            canvas.height = Math.floor(viewport.height);
-            canvas.style.width = "100%";
-            canvas.style.height = "auto";
-            canvas.style.display = "block";
-            canvas.style.marginBottom = "12px";
-            canvas.style.borderRadius = "10px";
-            canvas.style.background = "#fff";
+          // Render remaining pages progressively without blocking initial load.
+          const renderRest = async function () {
+            for (let pageNumber = 2; pageNumber <= pdf.numPages; pageNumber++) {
+              await renderPage(pdf, pageNumber, targetWidth);
+            }
+          };
 
-            await page.render({ canvasContext: context, viewport }).promise;
-            container.appendChild(canvas);
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(function () {
+              renderRest();
+            });
+          } else {
+            setTimeout(renderRest, 0);
           }
         } catch (error) {
           container.innerHTML =
@@ -696,7 +719,7 @@
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(renderPdfPages, 250);
       });
-    })();
+    });
   </script>
 </body>
 
