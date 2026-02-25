@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 <html dir="LTR" lang="en">
   <head>
@@ -20,11 +20,283 @@
         :root {
           --primary-color: #031f46;
         }
-      </style>
+      
+    body {
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body > *:not(.ramadan-bg-float) {
+      position: relative;
+      z-index: 1;
+    }
+
+    #company-header,
+    .menu-header {
+      position: relative;
+      overflow: hidden;
+    }
+
+    #company-logo,
+    #company-name,
+    #company-contacts,
+    .menu-title {
+      position: relative;
+      z-index: 3;
+    }
+.hanging-ramadan-decor {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .hang-item {
+      position: absolute;
+      top: 0;
+      left: var(--x, 10%);
+      opacity: 0;
+      transform: translateY(-170px);
+      animation: hangDrop 1.25s cubic-bezier(.2,.75,.25,1) forwards;
+      animation-delay: var(--drop-delay, 0s);
+    }
+
+    .hang-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform-origin: top center;
+      animation: swing var(--swing, 5s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .hang-string {
+      width: 2px;
+      height: var(--len, 95px);
+      background: linear-gradient(to bottom, rgba(213, 167, 69, 0.96), rgba(213, 167, 69, 0.28));
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
+    }
+
+        .hang-lantern,
+    .hang-moon {
+      position: relative;
+      margin-top: 2px;
+      transform-origin: top center;
+      transform: scale(var(--scale, 1));
+    }
+
+        .hang-lantern {
+      width: 84px;
+      height: 126px;
+      background-image: url('images/home/فانوس.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      filter: drop-shadow(0 0 16px rgba(255, 188, 64, 0.45));
+    }
+
+    .hang-lantern::before,
+    .hang-lantern::after {
+      content: none;
+    }
+
+    .hang-moon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 24% 24%, #fff3bf 0%, #f7d782 52%, #daae48 100%);
+      box-shadow: 0 0 16px rgba(244, 208, 111, 0.52), 0 0 30px rgba(244, 208, 111, 0.25);
+      transform: rotate(10deg) scale(var(--scale, 1));
+    }
+
+    .hang-moon::before {
+      content: "";
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      top: 6px;
+      left: 13px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .hang-moon::after {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      top: 8px;
+      left: 6px;
+      border-radius: 50%;
+      background: rgba(255, 245, 198, 0.95);
+      box-shadow: 7px 3px 0 rgba(255, 236, 171, 0.88), 2px 10px 0 rgba(255, 236, 171, 0.7);
+    }
+    .ramadan-bg-float {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .ramadan-bg-float .fly {
+      position: absolute;
+      top: 108%;
+      animation-name: floatUp;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      opacity: 0.38;
+    }
+
+        .ramadan-bg-float .fly.moon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(190, 35, 35, 0.34);
+      box-shadow: 0 0 8px rgba(190, 35, 35, 0.22);
+    }
+
+    .ramadan-bg-float .fly.moon::before {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      top: 2px;
+      left: 5px;
+      border-radius: 50%;
+      background: rgba(9, 14, 28, 0.95);
+    }
+
+    .ramadan-bg-float .fly.lantern {
+      width: 12px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1px solid rgba(205, 60, 60, 0.62);
+      background: linear-gradient(180deg, rgba(185, 31, 31, 0.5), rgba(120, 0, 0, 0.55));
+      box-shadow: 0 0 10px rgba(170, 20, 20, 0.32);
+    }
+
+    .ramadan-bg-float .fly.lantern::before {
+      content: "";
+      position: absolute;
+      top: -4px;
+      left: 2px;
+      width: 8px;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(205, 60, 60, 0.62);
+    }
+
+    .ramadan-bg-float .fly.lantern::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 5px;
+      width: 1px;
+      height: 5px;
+      background: rgba(205, 60, 60, 0.62);
+    }
+
+    .ramadan-bg-float .fly:nth-child(1) { left: 8%; animation-duration: 16s; animation-delay: -1s; }
+    .ramadan-bg-float .fly:nth-child(2) { left: 19%; animation-duration: 20s; animation-delay: -8s; }
+    .ramadan-bg-float .fly:nth-child(3) { left: 31%; animation-duration: 14s; animation-delay: -4s; }
+    .ramadan-bg-float .fly:nth-child(4) { left: 44%; animation-duration: 18s; animation-delay: -12s; }
+    .ramadan-bg-float .fly:nth-child(5) { left: 57%; animation-duration: 22s; animation-delay: -6s; }
+    .ramadan-bg-float .fly:nth-child(6) { left: 68%; animation-duration: 17s; animation-delay: -10s; }
+    .ramadan-bg-float .fly:nth-child(7) { left: 79%; animation-duration: 15s; animation-delay: -3s; }
+    .ramadan-bg-float .fly:nth-child(8) { left: 90%; animation-duration: 21s; animation-delay: -14s; }
+
+        @keyframes hangDrop {
+      0% {
+        transform: translateY(-170px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes swing {
+      0%, 100% { transform: rotate(var(--rot, 6deg)); }
+      50% { transform: rotate(calc(var(--rot, 6deg) * -1)); }
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+        opacity: 0;
+      }
+      15% { opacity: 0.4; }
+      80% { opacity: 0.35; }
+      100% {
+        transform: translate3d(18px, -120vh, 0) rotate(18deg);
+        opacity: 0;
+      }
+    }
+
+        @media (max-width: 768px) {
+      .hang-string { height: 58px; }
+      .hang-lantern { width: 62px; height: 94px; }
+      .hang-lantern::before { content: none; }
+      .hang-moon { width: 34px; height: 34px; }
+      .hanging-ramadan-decor .hide-mobile { display: none; }
+    }
+
+  </style>
   </head>
 
   <body>
-    <div id="company-header" class="nqt-bg-primary con"  style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/our-place/bg.png);">
+  <div class="ramadan-bg-float" aria-hidden="true">
+    <span class="fly moon"></span>
+    <span class="fly lantern"></span>
+    <span class="fly moon"></span>
+    <span class="fly lantern"></span>
+    <span class="fly moon"></span>
+    <span class="fly lantern"></span>
+    <span class="fly moon"></span>
+    <span class="fly lantern"></span>
+  </div>
+<div id="company-header" class="nqt-bg-primary con"  style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/our-place/bg.png);">
+    <div class="hanging-ramadan-decor" aria-hidden="true">
+    <div class="hang-item" style="--x:8%;--len:118px;--drop-delay:.1s;--delay:.2s;--swing:4.8s;--rot:5deg;--scale:.96;">
+      <div class="hang-body">
+        <span class="hang-string"></span>
+        <span class="hang-moon"></span>
+      </div>
+    </div>
+    <div class="hang-item" style="--x:11%;--len:92px;--drop-delay:.3s;--delay:.32s;--swing:5.1s;--rot:4deg;--scale:.86;">
+      <div class="hang-body">
+        <span class="hang-string"></span>
+        <span class="hang-moon"></span>
+      </div>
+    </div>
+    <div class="hang-item" style="--x:14%;--len:66px;--drop-delay:.5s;--delay:.45s;--swing:4.9s;--rot:6deg;--scale:.76;">
+      <div class="hang-body">
+        <span class="hang-string"></span>
+        <span class="hang-moon"></span>
+      </div>
+    </div>
+
+    <div class="hang-item" style="--x:86%;--len:118px;--drop-delay:.1s;--delay:.2s;--swing:4.8s;--rot:-6deg;--scale:.96;">
+      <div class="hang-body">
+        <span class="hang-string"></span>
+        <span class="hang-lantern"></span>
+      </div>
+    </div>
+    <div class="hang-item" style="--x:89%;--len:92px;--drop-delay:.3s;--delay:.32s;--swing:5.1s;--rot:-5deg;--scale:.86;">
+      <div class="hang-body">
+        <span class="hang-string"></span>
+        <span class="hang-lantern"></span>
+      </div>
+    </div>
+    <div class="hang-item" style="--x:92%;--len:66px;--drop-delay:.5s;--delay:.45s;--swing:4.9s;--rot:-4deg;--scale:.76;">
+      <div class="hang-body">
+        <span class="hang-string"></span>
+        <span class="hang-lantern"></span>
+      </div>
+    </div>
+  </div>
       <div id="company-logo" class="flex justify-center items-center logo scale-in-center">
         <img alt="coffeeshop 66" src="images/home/logo.png" width="250" height="150" />
       </div>
@@ -69,7 +341,21 @@
   <div class="container py-5 new">
     
     <div class="row new">
-        <div class="col-md-6 col-6 col-lg-3 mb-4 ">
+      <!-- ////////////////////////////////////////////////// ramadan ////////////////////////////////// -->
+
+      <div class="col-md-12 col-12 col-lg-12 mb-4 ">
+
+            <a href="ramadan.html" class="image-container flip-scale-up-ver"data-aos data-aos-delay="100" >
+                <img src="images/home/soup.png" class="  i-b-radius slide-in-left " height="400px" alt="Image 1">
+                <div class="overlay slide-in-left">
+                    <div class="text  slide-in-right h-head"> SOUP</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- ///////////////////////////////////////////////////////////////////////////////////////////// -->
+
+        <!-- <div class="col-md-6 col-6 col-lg-3 mb-4 ">
 
             <a href="en/soup.html" class="image-container flip-scale-up-ver"data-aos data-aos-delay="100" >
                 <img src="images/home/soup.png" class=" img-fluid i-b-radius slide-in-left " alt="Image 1">
@@ -177,12 +463,12 @@
             <div class="text  slide-in-right h-head"> DESSERT</div>
         </div>
     </a>
-</div>
+</div> -->
 
 
   </div>
-  <!-- <span class="text-center d-block title text-dark "style="font-size: 1.2rem;font-weight: bold; ">جميع الاسعار يضاف اليها :-  
-    <p class="mekha m-0 " style="color: #e63946; font-size: 1.2rem;font-weight: bold;"> ( 14 % ضريبة ) + ( 6 % خدمة )</p> 
+  <!-- <span class="text-center d-block title text-dark "style="font-size: 1.2rem;font-weight: bold; ">Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø§Ø³Ø¹Ø§Ø± ÙŠØ¶Ø§Ù Ø§Ù„ÙŠÙ‡Ø§ :-  
+    <p class="mekha m-0 " style="color: #e63946; font-size: 1.2rem;font-weight: bold;"> ( 14 % Ø¶Ø±ÙŠØ¨Ø© ) + ( 6 % Ø®Ø¯Ù…Ø© )</p> 
  </span> -->
 
 <br>
@@ -222,75 +508,43 @@
   }
   window.addEventListener('load', aosInit);
   /////////////////////////////////////////////////////////////////////////////
-  document.querySelectorAll('.flip-scale-up-ver').forEach(link => {
+document.querySelectorAll('.flip-scale-up-ver').forEach(link => {
 link.addEventListener('click', function(event) {
-    event.preventDefault(); // منع الانتقال المباشر
-    this.classList.add('clicked'); // تفعيل الأنيميشن
+    event.preventDefault(); // Ù…Ù†Ø¹ Ø§Ù„Ø§Ù†ØªÙ‚Ø§Ù„ Ø§Ù„Ù…Ø¨Ø§Ø´Ø±
+    this.classList.add('clicked'); // ØªÙØ¹ÙŠÙ„ Ø§Ù„Ø£Ù†ÙŠÙ…ÙŠØ´Ù†
 
-    // الانتقال بعد انتهاء الأنيميشن
+    // Ø§Ù„Ø§Ù†ØªÙ‚Ø§Ù„ Ø¨Ø¹Ø¯ Ø§Ù†ØªÙ‡Ø§Ø¡ Ø§Ù„Ø£Ù†ÙŠÙ…ÙŠØ´Ù†
     setTimeout(() => {
         window.location.href = this.href;
-    }, 400); // نفس مدة الأنيميشن
+    }, 400); // Ù†ÙØ³ Ù…Ø¯Ø© Ø§Ù„Ø£Ù†ÙŠÙ…ÙŠØ´Ù†
 });
 });
 // ///////////////////////////////////////////////////////////////////////////////
-
-
-document.querySelectorAll('a[href]').forEach(function(link) {
-if (!link.href.startsWith(window.location.origin)) {
-    link.setAttribute('target', '_blank');
-    link.setAttribute('rel', 'noopener noreferrer');
-}
-});
-
-
-document.addEventListener("DOMContentLoaded", function () {
-// ✅ منع النقر بزر الفأرة الأيمن
-document.addEventListener("contextmenu", function (e) {
-  e.preventDefault();
-});
-
-// ✅ منع سحب الصور
-document.querySelectorAll("img").forEach(img => {
-  img.addEventListener("dragstart", function (e) {
-      e.preventDefault();
-  });
-});
-
-// ✅ تعطيل اختصارات DevTools مثل F12 و Ctrl+Shift+I و Ctrl+U
-document.addEventListener("keydown", function (e) {
-  if (e.key === "F12" || 
-      (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) || 
-      (e.ctrlKey && e.key === "U")) {
-      e.preventDefault();
-      alert("🚫 تم تعطيل الاختصارات لحماية الموقع!");
-  }
-});
-
-// ✅ مراقبة فتح DevTools وإخفاء المحتوى أو تعطيله
-function detectDevTools() {
-  // إذا كان الفرق بين أبعاد نافذة المتصفح و الأبعاد الداخلية أكبر من 200 بكسل (فتح DevTools)
-  if (window.outerWidth - window.innerWidth > 200 || window.outerHeight - window.innerHeight > 200) {
-      document.body.innerHTML = "<h2 style='text-align:center; color:red;'>🚫 تم اكتشاف أدوات المطور!</h2>";
-      setTimeout(() => { window.location.href = "about:blank"; }, 1000); // إعادة التوجيه إلى صفحة فارغة
-  }
-}
-
-// ✅ فحص مستمر على فترات (كل 1 ثانية) لمراقبة أدوات المطور
-setInterval(detectDevTools, 1000);
-
-});
-
 </script>
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
   integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-<script src="js/contact.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
